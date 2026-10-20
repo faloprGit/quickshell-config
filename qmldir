@@ -1,0 +1,44 @@
+singleton Colors 1.0 config/Colors.qml
+singleton Metrics 1.0 config/Metrics.qml
+singleton Config 1.0 config/Config.qml
+
+singleton PillController 1.0 controllers/PillController.qml
+singleton InfoController 1.0 controllers/InfoController.qml
+singleton TimingController 1.0 controllers/TimingController.qml
+singleton CatheterController 1.0 controllers/CatheterController.qml
+singleton AudioController 1.0 controllers/AudioController.qml
+singleton OverlayController 1.0 controllers/OverlayController.qml
+singleton MusicController 1.0 controllers/MusicController.qml
+singleton CompactController 1.0 controllers/CompactController.qml
+
+
+Bar Bar.qml
+
+ClockWidget widgets/ClockWidget.qml
+WorkspaceWidget widgets/WorkspaceWidget.qml
+TimeDateWidget widgets/TimeDateWidget.qml
+NavigationWidget widgets/NavigationWidget.qml
+SystemInfoWidget widgets/SystemInfoWidget.qml
+SystemTrayWidget widgets/SystemTrayWidget.qml
+CircularClockWidget widgets/CircularClockWidget.qml
+CatheterTimeWidget widgets/CatheterTimeWidget.qml
+CatheterChangedWidget widgets/CatheterChangedWidget.qml
+TimingWidget widgets/TimingWidget.qml
+VolumeWidget widgets/VolumeWidget.qml
+
+CompactPage pages/CompactPage.qml
+MainPage pages/MainPage.qml
+MusicPage pages/MusicPage.qml
+InfoPage pages/InfoPage.qml
+TimePage pages/TimePage.qml
+CatheterPage pages/CatheterPage.qml
+AudioPage pages/AudioPage.qml
+VolumePage pages/VolumePage.qml
+
+PillButton components/PillButton.qml
+PillText components/PillText.qml
+PillIcon components/PillIcon.qml
+PillTextField components/PillTextField.qml
+PillSlider components/PillSlider.qml
+
+CalendarButton components/CalendarButton.qml
