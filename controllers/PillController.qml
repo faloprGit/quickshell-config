@@ -5,10 +5,11 @@ import Quickshell.Hyprland
 
 Singleton {
     id: root
-    property bool hovered: false
-    readonly property bool shouldExpand: hovered
-    property bool needFocus: false
 
+    property bool isExpanded: false
+    readonly property bool shouldExpand: isExpanded || overlayOverridePage !== ""
+
+    property bool needFocus: false
     property var historyStack: ["Main"]
     property int historyIndex: 0
 
@@ -20,6 +21,25 @@ Singleton {
         : historyStack[historyIndex] !== undefined ? historyStack[historyIndex] : "Main"
 
     readonly property int maxHistoryLength: 20
+
+    function expand() {
+        isExpanded = true;
+    }
+
+    function collapse() {
+        isExpanded = false;
+    }
+
+    function toggleExpand() {
+        isExpanded = !isExpanded;
+    }
+
+    function navigateAndExpand(pageName) {
+        if (pageName && pageName !== "") {
+            navigateTo(pageName);
+        }
+        isExpanded = true;
+    }
 
     function navigateTo(pageName) {
         if (!pageName || pageName === "") return;

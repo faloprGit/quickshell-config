@@ -20,6 +20,7 @@ ShellRoot {
         model: Quickshell.screens
 
         delegate: PanelWindow {
+            id: panelWindow
             required property var modelData
             screen: modelData
             exclusionMode: ExclusionMode.Ignore
@@ -32,7 +33,10 @@ ShellRoot {
 
             visible: Config.showOnAllScreens || (currentMonitorName === PillController.startupMouseMonitorName)
 
-            mask: Region {
+            mask: PillController.shouldExpand ? null : barRegion
+
+            Region {
+                id: barRegion
                 item: interactibleContainer
             }
 
@@ -45,6 +49,20 @@ ShellRoot {
 
             color: "transparent"
 
+            TapHandler {
+                enabled: PillController.shouldExpand
+                onTapped: (eventPoint) => {
+                    let localPos = interactibleContainer.mapFromItem(null, eventPoint.position);
+
+                    if (!interactibleContainer.contains(localPos)) {
+                        if (OverlayController.isOverlayActive) {
+                            OverlayController.dismissOverlay();
+                        }
+                        PillController.collapse();
+                    }
+                }
+            }
+
             // Makes the space above the Bar also hoverable
             Item {
                 id: interactibleContainer
@@ -53,6 +71,19 @@ ShellRoot {
                 implicitWidth: island.implicitWidth
                 implicitHeight: island.implicitHeight + island.anchors.topMargin
 
+                HoverHandler {
+                    cursorShape: PillController.shouldExpand ? Qt.ArrowCursor : Config.cursorOnMouseArea
+                }
+
+                TapHandler {
+                    acceptedButtons: Qt.LeftButton
+                    onTapped: {
+                        if (!PillController.shouldExpand) {
+                            PillController.expand();
+                        }
+                    }
+                }
+
                 Bar {
                     id: island
                     anchors {
@@ -60,13 +91,6 @@ ShellRoot {
                         top: parent.top
                         topMargin: 8
                     }
-                }
-            }
-
-            HoverHandler {
-                id: hover
-                onHoveredChanged: {
-                    PillController.setHover(hovered);
                 }
             }
         }
