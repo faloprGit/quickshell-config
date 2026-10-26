@@ -68,6 +68,9 @@ ShellRoot {
                 id: interactibleContainer
                 anchors.horizontalCenter: parent.horizontalCenter
 
+                width: implicitWidth
+                height: implicitHeight
+
                 implicitWidth: island.implicitWidth
                 implicitHeight: island.implicitHeight + island.anchors.topMargin
 

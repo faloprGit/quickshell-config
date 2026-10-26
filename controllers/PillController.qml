@@ -69,10 +69,6 @@ Singleton {
         }
     }
 
-    function setHover(hover) {
-        hovered = hover;
-    }
-
     Timer {
         id: lockTimer
         interval: 50
