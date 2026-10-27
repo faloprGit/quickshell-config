@@ -55,7 +55,7 @@ Singleton {
 
     function navigateTo(pageName) {
         if (!pageName || pageName === "") return;
-        if (currentPageName === pageName) return; // No Duplicates
+        if (historyStack[historyIndex] === pageName) return;
 
         var newStack = historyStack.slice(0, historyIndex + 1);
         newStack.push(pageName);

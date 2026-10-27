@@ -35,12 +35,11 @@ Singleton {
     function triggerOverlay(pageName, customDuration) {
         if (!ready) return;
 
-        if (pageName && PillController.currentPageName !== pageName) {
+        if (pageName) {
             PillController.overlayOverridePage = pageName;
         }
 
         isOverlayActive = true;
-
         autoCloseTimer.interval = customDuration !== undefined ? customDuration : root.defaultTimeout;
 
         if (PillController.isExpanded || isHovered) {
