@@ -46,7 +46,7 @@ Item {
     Item {
         id: scrollViewport
         anchors.fill: parent
-        clip: true
+        clip: root.scrollable && root.isOverflowing
         visible: !(root.scrollable && root.isOverflowing)
 
         Item {
