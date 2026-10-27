@@ -48,4 +48,4 @@ PillTextField components/PillTextField.qml
 PillSlider components/PillSlider.qml
 
 CalendarButton components/CalendarButton.qml
-PageTransitionWrapper components/PageTransitionWrapper.qml
+GradientBackground components/GradientBackground.qml

@@ -1,6 +1,7 @@
+// ./components/PillText.qml
 pragma ComponentBehavior: Bound
 import QtQuick
-import QtQuick.Effects
+import Qt5Compat.GraphicalEffects
 import ".."
 
 Item {
@@ -21,7 +22,7 @@ Item {
     property bool sampleTextMinSize: false
 
     implicitWidth: sampleText !== ""
-        ? sampleTextMinSize ? Math.min(singleTextMetrics.width, sampleMetrics.width) : sampleMetrics.width
+        ? (sampleTextMinSize ? Math.min(singleTextMetrics.width, sampleMetrics.width) : sampleMetrics.width)
         : singleTextMetrics.width
 
     implicitHeight: Math.ceil(singleTextMetrics.height * 1.15)
@@ -43,90 +44,77 @@ Item {
     readonly property bool isOverflowing: singleTextMetrics.width > root.width
 
     Item {
-        id: textContainer
-        x: 0
-        height: parent.height
-        width: singleTextMetrics.width * 2 + root.textSpacing
+        id: scrollViewport
+        anchors.fill: parent
+        clip: true
+        visible: !(root.scrollable && root.isOverflowing)
 
-        Text {
-            id: primaryText
-            anchors.verticalCenter: parent.verticalCenter
-            color: Colors.md3.on_surface
-            font {
-                pixelSize: 24
-                weight: Metrics.defaultTextWeight
-                family: "NotoSans Nerd Font"
-            }
-            font.features: { "tnum": 1 }
-            horizontalAlignment: root.alignment
-            verticalAlignment: Text.AlignVCenter
+        Item {
+            id: textContainer
+            x: 0
+            height: parent.height
+            width: singleTextMetrics.width * 2 + root.textSpacing
 
-            onTextChanged: {
-                scrollAnim.stop();
-                textContainer.x = 0;
-                if (root.scrollable && root.isOverflowing) {
-                    scrollAnim.restart();
+            Text {
+                id: primaryText
+                anchors.verticalCenter: parent.verticalCenter
+                color: Colors.md3.on_surface
+                font {
+                    pixelSize: 24
+                    weight: Metrics.defaultTextWeight
+                    family: "NotoSans Nerd Font"
+                }
+                font.features: { "tnum": 1 }
+                horizontalAlignment: root.alignment
+                verticalAlignment: Text.AlignVCenter
+
+                onTextChanged: {
+                    scrollAnim.stop();
+                    textContainer.x = 0;
+                    if (root.scrollable && root.isOverflowing) {
+                        scrollAnim.restart();
+                    }
                 }
             }
-        }
 
-        Text {
-            id: duplicateText
-            text: primaryText.text
-            color: primaryText.color
-            font: primaryText.font
-            visible: root.scrollable && root.isOverflowing
-            anchors.verticalCenter: parent.verticalCenter
-            x: primaryText.width + root.textSpacing
-            horizontalAlignment: primaryText.horizontalAlignment
-            verticalAlignment: primaryText.verticalAlignment
+            Text {
+                id: duplicateText
+                text: primaryText.text
+                color: primaryText.color
+                font: primaryText.font
+                visible: root.scrollable && root.isOverflowing
+                anchors.verticalCenter: parent.verticalCenter
+                x: primaryText.width + root.textSpacing
+                horizontalAlignment: primaryText.horizontalAlignment
+                verticalAlignment: primaryText.verticalAlignment
+            }
         }
     }
 
     Rectangle {
-        id: leftFadeOverlay
-        anchors {
-            left: parent.left
-            leftMargin: -1
-            top: parent.top
-            bottom: parent.bottom
-        }
-        width: 18
-        z: 2
-        visible: root.scrollable && root.isOverflowing
-
+        id: maskItem
+        anchors.fill: parent
+        visible: false
         gradient: Gradient {
             orientation: Gradient.Horizontal
-            GradientStop { position: 0.0; color: Colors.md3.background }
+            GradientStop { position: 0.0; color: "transparent" }
+            GradientStop { position: 0.12; color: "black" }
+            GradientStop { position: 0.88; color: "black" }
             GradientStop { position: 1.0; color: "transparent" }
         }
     }
 
-    Rectangle {
-        id: rightFadeOverlay
-        anchors {
-            right: parent.right
-            rightMargin: -1
-            top: parent.top
-            bottom: parent.bottom
-        }
-        width: 18
-        z: 2
+    OpacityMask {
+        anchors.fill: parent
+        source: scrollViewport
+        maskSource: maskItem
         visible: root.scrollable && root.isOverflowing
-
-        gradient: Gradient {
-            orientation: Gradient.Horizontal
-            GradientStop { position: 0.0; color: "transparent" }
-            GradientStop { position: 1.0; color: Colors.md3.background }
-        }
     }
 
     SequentialAnimation {
         id: scrollAnim
         running: root.scrollable && root.isOverflowing
         loops: Animation.Infinite
-
-        // PauseAnimation { duration: 1500 }
 
         NumberAnimation {
             target: textContainer
