@@ -35,6 +35,7 @@ MainPage pages/MainPage.qml
 MusicPage pages/MusicPage.qml
 InfoPage pages/InfoPage.qml
 TimePage pages/TimePage.qml
+TimerFinishedPage pages/TimerFinishedPage.qml
 CatheterPage pages/CatheterPage.qml
 AudioPage pages/AudioPage.qml
 VolumePage pages/VolumePage.qml

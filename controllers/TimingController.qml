@@ -15,8 +15,8 @@ Singleton {
     property bool isFieldFocusable: true
 
     Process {
-        id: notifyStoppedProc
-        command: ["notify-send", "-e", "Timer", "finished", "-a", "SwayNC"]
+        id: playSoundProc
+        command: ["pw-play", "/usr/share/sounds/freedesktop/stereo/complete.oga"]
     }
 
     Timer {
@@ -35,9 +35,10 @@ Singleton {
                 parent.storedTime -= 1;
 
                 if (parent.storedTime <= 0) {
-                    parent.timerStop()
-                    parent.storedTime = 0
-                    notifyStoppedProc.startDetached()
+                    parent.timerStop();
+                    parent.storedTime = 0;
+                    playSoundProc.startDetached();
+                    OverlayController.triggerOverlay("TimerFinished", 3000);
                 }
             } else {
                 parent.storedTime += 1;
