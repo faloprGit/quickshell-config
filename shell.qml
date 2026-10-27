@@ -9,6 +9,7 @@ ShellRoot {
 
     Component.onCompleted: {
         var _audio = AudioController;
+        var _music = MusicController;
         var _info = InfoController;
         var _overlay = OverlayController;
         var _catheter = CatheterController;
@@ -80,7 +81,15 @@ ShellRoot {
                 }
 
                 transform: Translate {
+                    id: containerTranslate
                     y: interactibleContainer.targetY
+
+                    Behavior on y {
+                        NumberAnimation {
+                            duration: Metrics.animDurationNormal
+                            easing.type: Easing.OutCubic
+                        }
+                    }
                 }
 
                 HoverHandler {

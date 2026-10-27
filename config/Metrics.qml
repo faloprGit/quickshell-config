@@ -47,4 +47,15 @@ QtObject {
     property real timePageHeight: 100
     property real catheterPageHeight: 120
     property real audioPageHeight: 100
+
+
+
+    // Animations values
+    property int animDurationFast: 100
+    property int animDurationNormal: 250
+    property int animDurationSlow: 450
+
+    property int animEasingType: Easing.OutCubic
+    property int animEasingQuad: Easing.InOutQuad
+    property int animEasingSpring: Easing.OutBack
 }

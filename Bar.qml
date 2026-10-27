@@ -4,17 +4,86 @@ import QtQuick
 Rectangle {
     id: mainBar
 
-    implicitWidth: contentLoader.item.implicitWidth + Metrics.barHorizontalPadding
-    implicitHeight: contentLoader.item.implicitHeight + Metrics.barVerticalPadding
+    clip: true
+
+    readonly property string targetPage: "pages/" + (PillController.shouldExpand || OverlayController.isOverlayActive ? PillController.currentPageName + "Page.qml" : "CompactPage.qml")
+
+    implicitWidth: (pageLoader.status === Loader.Ready && pageLoader.item ? pageLoader.item.implicitWidth : 150) + Metrics.barHorizontalPadding
+    implicitHeight: (pageLoader.status === Loader.Ready && pageLoader.item ? pageLoader.item.implicitHeight : 30) + Metrics.barVerticalPadding
 
     color: Colors.md3.background
-
     radius: Math.min(Metrics.defaultRadius, (height / 2))
 
     Loader {
-        id: contentLoader
-        source: "pages/" + (PillController.shouldExpand || OverlayController.isOverlayActive ? PillController.currentPageName + "Page.qml" : "CompactPage.qml")
+        id: pageLoader
         anchors.centerIn: parent
+        source: mainBar.targetPage
+        opacity: 1.0
+        scale: 1.0
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: Metrics.animDurationFast
+                easing.type: Easing.OutQuad
+            }
+        }
+
+        Behavior on scale {
+            NumberAnimation {
+                duration: Metrics.animDurationNormal
+                easing.type: Metrics.animEasingType
+            }
+        }
+    }
+
+    onTargetPageChanged: {
+        pageTransitionAnim.restart();
+    }
+
+    SequentialAnimation {
+        id: pageTransitionAnim
+
+        ParallelAnimation {
+            NumberAnimation {
+                target: pageLoader
+                property: "opacity"
+                to: 0.0
+                duration: Metrics.animDurationFast
+                easing.type: Easing.InQuad
+            }
+
+            NumberAnimation {
+                target: pageLoader
+                property: "scale"
+                to: 0.88
+                duration: Metrics.animDurationFast
+                easing.type: Easing.InQuad
+            }
+        }
+
+        ScriptAction {
+            script: {
+                pageLoader.source = mainBar.targetPage;
+            }
+        }
+
+        ParallelAnimation {
+            NumberAnimation {
+                target: pageLoader
+                property: "opacity"
+                to: 1.0
+                duration: Metrics.animDurationNormal
+                easing.type: Easing.OutQuad
+            }
+
+            NumberAnimation {
+                target: pageLoader
+                property: "scale"
+                to: 1.0
+                duration: Metrics.animDurationSlow
+                easing.type: Easing.OutBack
+            }
+        }
     }
 
     TapHandler {
@@ -40,23 +109,14 @@ Rectangle {
     }
 
     Behavior on implicitWidth {
-        NumberAnimation {
-            duration: 250
-            easing.type: Easing.InOutQuad
-        }
+        Animations.BouncySlide {}
     }
 
     Behavior on implicitHeight {
-        NumberAnimation {
-            duration: 250
-            easing.type: Easing.InOutQuad
-        }
+        Animations.BouncySlide {}
     }
 
     Behavior on radius {
-        NumberAnimation {
-            duration: 250
-            easing.type: Easing.InOutQuad
-        }
+        Animations.BouncySlide {}
     }
 }

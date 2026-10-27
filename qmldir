@@ -1,6 +1,7 @@
 singleton Colors 1.0 config/Colors.qml
 singleton Metrics 1.0 config/Metrics.qml
 singleton Config 1.0 config/Config.qml
+singleton Animations 1.0 config/Animations.qml
 
 singleton PillController 1.0 controllers/PillController.qml
 singleton InfoController 1.0 controllers/InfoController.qml
@@ -47,3 +48,4 @@ PillTextField components/PillTextField.qml
 PillSlider components/PillSlider.qml
 
 CalendarButton components/CalendarButton.qml
+PageTransitionWrapper components/PageTransitionWrapper.qml
