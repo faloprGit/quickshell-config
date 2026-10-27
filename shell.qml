@@ -33,7 +33,7 @@ ShellRoot {
 
             visible: Config.showOnAllScreens || (currentMonitorName === PillController.startupMouseMonitorName)
 
-            mask: PillController.shouldExpand ? null : barRegion
+            mask: PillController.isExpanded ? null : barRegion
 
             Region {
                 id: barRegion
@@ -50,14 +50,10 @@ ShellRoot {
             color: "transparent"
 
             TapHandler {
-                enabled: PillController.shouldExpand
+                enabled: PillController.isExpanded
                 onTapped: (eventPoint) => {
                     let localPos = interactibleContainer.mapFromItem(null, eventPoint.position);
-
                     if (!interactibleContainer.contains(localPos)) {
-                        if (OverlayController.isOverlayActive) {
-                            OverlayController.dismissOverlay();
-                        }
                         PillController.collapse();
                     }
                 }
@@ -75,7 +71,9 @@ ShellRoot {
                 implicitHeight: island.implicitHeight + island.anchors.topMargin
 
                 HoverHandler {
-                    cursorShape: PillController.shouldExpand ? Qt.ArrowCursor : Config.cursorOnMouseArea
+                    onHoveredChanged: {
+                        OverlayController.setHovered(hovered);
+                    }
                 }
 
                 TapHandler {

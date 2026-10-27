@@ -10,6 +10,7 @@ Singleton {
     property int exitTimeout: 200
 
     property bool isOverlayActive: false
+    property bool isHovered: false
 
     property bool ready: false
 
@@ -42,7 +43,7 @@ Singleton {
 
         autoCloseTimer.interval = customDuration !== undefined ? customDuration : root.defaultTimeout;
 
-        if (PillController.shouldExpand) {
+        if (PillController.isExpanded || isHovered) {
             autoCloseTimer.stop();
         } else {
             autoCloseTimer.restart();
@@ -57,14 +58,26 @@ Singleton {
         }
     }
 
+    function setHovered(hovered) {
+        isHovered = hovered;
+        if (isOverlayActive && !PillController.isExpanded) {
+            if (hovered) {
+                autoCloseTimer.stop();
+            } else {
+                root.autoCloseTimer.interval = root.exitTimeout;
+                root.autoCloseTimer.restart();
+            }
+        }
+    }
+
     Connections {
         target: PillController
 
-        function onShouldExpandChanged() {
+        function onIsExpandChanged() {
             if (root.isOverlayActive) {
-                if (PillController.shouldExpand) {
+                if (PillController.isExpanded) {
                     root.autoCloseTimer.stop();
-                } else {
+                } else if (!root.isHovered) {
                     root.autoCloseTimer.interval = root.exitTimeout;
                     root.autoCloseTimer.restart();
                 }
