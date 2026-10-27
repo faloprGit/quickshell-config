@@ -1,5 +1,6 @@
-// PillText.qml
+pragma ComponentBehavior: Bound
 import QtQuick
+import QtQuick.Effects
 import ".."
 
 Item {
@@ -82,12 +83,50 @@ Item {
         }
     }
 
+    Rectangle {
+        id: leftFadeOverlay
+        anchors {
+            left: parent.left
+            leftMargin: -1
+            top: parent.top
+            bottom: parent.bottom
+        }
+        width: 18
+        z: 2
+        visible: root.scrollable && root.isOverflowing
+
+        gradient: Gradient {
+            orientation: Gradient.Horizontal
+            GradientStop { position: 0.0; color: Colors.md3.background }
+            GradientStop { position: 1.0; color: "transparent" }
+        }
+    }
+
+    Rectangle {
+        id: rightFadeOverlay
+        anchors {
+            right: parent.right
+            rightMargin: -1
+            top: parent.top
+            bottom: parent.bottom
+        }
+        width: 18
+        z: 2
+        visible: root.scrollable && root.isOverflowing
+
+        gradient: Gradient {
+            orientation: Gradient.Horizontal
+            GradientStop { position: 0.0; color: "transparent" }
+            GradientStop { position: 1.0; color: Colors.md3.background }
+        }
+    }
+
     SequentialAnimation {
         id: scrollAnim
         running: root.scrollable && root.isOverflowing
         loops: Animation.Infinite
 
-        //PauseAnimation { duration: 2000 }
+        // PauseAnimation { duration: 1500 }
 
         NumberAnimation {
             target: textContainer
