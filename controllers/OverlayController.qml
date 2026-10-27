@@ -73,7 +73,7 @@ Singleton {
     Connections {
         target: PillController
 
-        function onIsExpandChanged() {
+        function onIsExpandedChanged() {
             if (root.isOverlayActive) {
                 if (PillController.isExpanded) {
                     root.autoCloseTimer.stop();

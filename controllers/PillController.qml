@@ -9,6 +9,9 @@ Singleton {
     property bool isExpanded: false
     readonly property bool shouldExpand: isExpanded || overlayOverridePage !== ""
 
+    property bool isStowed: false
+    property bool isShortcutPeeking: false
+
     property bool needFocus: false
     property var historyStack: ["Main"]
     property int historyIndex: 0
@@ -23,18 +26,27 @@ Singleton {
     readonly property int maxHistoryLength: 20
 
     function expand() {
+        isStowed = false;
+        isShortcutPeeking = false;
         isExpanded = true;
     }
 
     function collapse() {
         isExpanded = false;
+        isShortcutPeeking = false;
     }
 
     function toggleExpand() {
+        if (!isExpanded) {
+            isStowed = false;
+            isShortcutPeeking = false;
+        }
         isExpanded = !isExpanded;
     }
 
     function navigateAndExpand(pageName) {
+        isStowed = false;
+        isShortcutPeeking = false;
         if (pageName && pageName !== "") {
             navigateTo(pageName);
         }
@@ -67,6 +79,21 @@ Singleton {
         if (historyIndex < historyStack.length - 1) {
             historyIndex++;
         }
+    }
+
+    function toggleStowed() {
+        if (isExpanded) {
+            collapse();
+        }
+        isShortcutPeeking = false;
+        isStowed = !isStowed
+    }
+
+    function toggleShortcutPeek() {
+        if (isExpanded) {
+            collapse();
+        }
+        isShortcutPeeking = !isShortcutPeeking;
     }
 
     Timer {

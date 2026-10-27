@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Hyprland
+import Quickshell.Wayland
 
 ShellRoot {
     id: root
@@ -32,6 +33,8 @@ ShellRoot {
             }
 
             visible: Config.showOnAllScreens || (currentMonitorName === PillController.startupMouseMonitorName)
+
+            WlrLayershell.layer: (PillController.isShortcutPeeking || PillController.isExpanded) ? WlrLayer.Overlay : WlrLayer.Top
 
             mask: PillController.isExpanded ? null : barRegion
 
@@ -70,7 +73,18 @@ ShellRoot {
                 implicitWidth: island.implicitWidth
                 implicitHeight: island.implicitHeight + island.anchors.topMargin
 
+                readonly property bool isPeeking: (PillController.isStowed && peekHoverHandler.hovered) || PillController.isShortcutPeeking
+                readonly property real targetY: {
+                    if (!PillController.isStowed || isPeeking) return 0;
+                    return -(island.height + island.anchors.topMargin - 8);
+                }
+
+                transform: Translate {
+                    y: interactibleContainer.targetY
+                }
+
                 HoverHandler {
+                    id: peekHoverHandler
                     onHoveredChanged: {
                         OverlayController.setHovered(hovered);
                     }
@@ -79,10 +93,17 @@ ShellRoot {
                 TapHandler {
                     acceptedButtons: Qt.LeftButton
                     onTapped: {
-                        if (!PillController.shouldExpand) {
+                        if (PillController.isStowed) {
+                            PillController.isStowed = false;
+                        } else if (!PillController.isExpanded) {
                             PillController.expand();
                         }
                     }
+                }
+
+                TapHandler {
+                    acceptedButtons: Qt.RightButton
+                    onTapped: PillController.toggleStowed()
                 }
 
                 Bar {
@@ -94,6 +115,14 @@ ShellRoot {
                     }
                 }
             }
+        }
+    }
+
+    GlobalShortcut {
+        name: "peekTime"
+        description: "Toggle Compact Bar Peek"
+        onPressed: {
+            PillController.toggleShortcutPeek();
         }
     }
 }
