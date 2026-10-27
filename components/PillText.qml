@@ -17,10 +17,15 @@ Item {
     property real scrollSpeed: 40
     property int textSpacing: 40
 
-    implicitWidth: sampleText !== "" ? sampleMetrics.width : singleTextMetrics.width
-    implicitHeight: singleTextMetrics.height
+    property bool sampleTextMinSize: false
 
-    clip: true
+    implicitWidth: sampleText !== ""
+        ? sampleTextMinSize ? Math.min(singleTextMetrics.width, sampleMetrics.width) : sampleMetrics.width
+        : singleTextMetrics.width
+
+    implicitHeight: Math.ceil(singleTextMetrics.height * 1.15)
+
+    clip: scrollable && isOverflowing
 
     TextMetrics {
         id: sampleMetrics

@@ -26,6 +26,10 @@ CatheterChangedWidget widgets/CatheterChangedWidget.qml
 TimingWidget widgets/TimingWidget.qml
 VolumeWidget widgets/VolumeWidget.qml
 
+MainComplication widgets/complications/MainComplication.qml
+MusicComplication widgets/complications/MusicComplication.qml
+TimerComplication widgets/complications/TimerComplication.qml
+
 CompactPage pages/CompactPage.qml
 MainPage pages/MainPage.qml
 MusicPage pages/MusicPage.qml

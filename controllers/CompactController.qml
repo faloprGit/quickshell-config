@@ -13,7 +13,7 @@ Singleton {
     property var hangTimers: ({})
 
     function notifyState(compKey, isActive, hangMs) {
-        var duration = (hangMs !== undefined) ? hangMs : 60000;
+        var duration = (hangMs !== undefined) ? hangMs : Config.compDefaultHangTime;
 
         if (isActive) {
             cancelHangTimer(compKey);

@@ -6,6 +6,7 @@ QtObject {
     readonly property bool showOnAllScreens: false
     readonly property var cursorOnMouseArea: Qt.PointingHandCursor // or default: Qt.ArrowCursor
     readonly property int volumeStepSize: 5
+    readonly property int compDefaultHangTime: 60000
 
     readonly property string location: "Meise" // For weather
     readonly property bool useFahrenheit: false

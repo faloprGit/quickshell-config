@@ -2,6 +2,7 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import ".."
 
 Singleton {
     property int storedTimeInitial: 1200
@@ -24,6 +25,10 @@ Singleton {
         repeat: true
         running: false
         triggeredOnStart: false
+
+        onRunningChanged: {
+            CompactController.notifyState("Timer", running, Config.compDefaultHangTime);
+        }
 
         onTriggered: {
             if (parent.isCountingDown) {
@@ -60,10 +65,12 @@ Singleton {
 
         countTimer.start();
         isFieldFocusable = false;
+        CompactController.notifyState("Timer", true, Config.compDefaultHangTime);
     }
 
     function timerStop() {
         countTimer.stop();
         isFieldFocusable = true;
+        CompactController.notifyState("Timer", false, Config.compDefaultHangTime);
     }
 }

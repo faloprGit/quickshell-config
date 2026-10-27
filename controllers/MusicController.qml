@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 pragma Singleton
 import QtQuick
 import Quickshell
@@ -13,6 +14,38 @@ Singleton {
     readonly property MprisPlayer currentChoice: activePlayers.length > 0
         ? activePlayers[Math.min(selectedIndex, activePlayers.length - 1)]
         : null
+
+
+    // Monitor ALL connected media players dynamically (Spotify, Firefox, MPV, etc.)
+    Instantiator {
+        model: Mpris.players.values
+        delegate: Connections {
+            required property MprisPlayer modelData
+            target: modelData
+            ignoreUnknownSignals: true
+
+            function onPlaybackStateChanged() {
+                root.checkGlobalMusicState();
+            }
+        }
+
+        onCountChanged: root.checkGlobalMusicState()
+        onObjectAdded: root.checkGlobalMusicState()
+        onObjectRemoved: root.checkGlobalMusicState()
+    }
+
+    function checkGlobalMusicState() {
+        var anyPlaying = false;
+        var players = Mpris.players.values;
+        for (var i = 0; i < players.length; i++) {
+            if (players[i].playbackState === MprisPlaybackState.Playing) {
+                anyPlaying = true;
+                selectedIndex = i;
+                break;
+            }
+        }
+        CompactController.notifyState("Music", anyPlaying, Config.compDefaultHangTime);
+    }
 
     function changeIndex(value) {
         if (activePlayers.length > 0) {
