@@ -33,6 +33,16 @@ Item {
                     color: isCurrent ? Colors.md3.primary : Colors.md3.outline
                     opacity: isCurrent ? 1.0 : (itemMouseArea.containsMouse ? 1 : 0.8)
 
+                    Behavior on implicitWidth {
+                        Animations.BouncySlide {}
+                    }
+
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: Metrics.animDurationNormal
+                        }
+                    }
+
                     MouseArea {
                         id: itemMouseArea
                         anchors.fill: parent

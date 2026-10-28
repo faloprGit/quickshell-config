@@ -26,6 +26,8 @@ CatheterTimeWidget widgets/CatheterTimeWidget.qml
 CatheterChangedWidget widgets/CatheterChangedWidget.qml
 TimingWidget widgets/TimingWidget.qml
 VolumeWidget widgets/VolumeWidget.qml
+WorkspaceExpandedWidget widgets/WorkspaceExpandedWidget.qml
+CalendarWidget widgets/CalendarWidget.qml
 
 MainComplication widgets/complications/MainComplication.qml
 MusicComplication widgets/complications/MusicComplication.qml
@@ -40,6 +42,8 @@ TimerFinishedPage pages/TimerFinishedPage.qml
 CatheterPage pages/CatheterPage.qml
 AudioPage pages/AudioPage.qml
 VolumePage pages/VolumePage.qml
+WorkspacePage pages/WorkspacePage.qml
+CalendarPage pages/CalendarPage.qml
 
 PillButton components/PillButton.qml
 PillText components/PillText.qml

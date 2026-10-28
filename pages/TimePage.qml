@@ -11,7 +11,9 @@ Item {
         anchors.centerIn: parent
         spacing: Metrics.pageRowSpacing
 
-        CircularClockWidget {}
+        CircularClockWidget {
+            anchors.verticalCenter: parent.verticalCenter
+        }
 
         Column {
             anchors.verticalCenter: parent.verticalCenter
@@ -30,8 +32,13 @@ Item {
             }
         }
 
-        TimingWidget {}
+        TimingWidget {
+            anchors.verticalCenter: parent.verticalCenter
+        }
 
-        CalendarButton {}
+        CalendarButton {
+            anchors.verticalCenter: parent.verticalCenter
+            onClicked: PillController.navigateTo("Calendar")
+        }
     }
 }

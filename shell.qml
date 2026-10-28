@@ -135,4 +135,10 @@ ShellRoot {
             PillController.toggleShortcutPeek();
         }
     }
+
+    GlobalShortcut {
+        name: "workspaceOverlay"
+        description: "Show Multi-Monitor Workspace Cards"
+        onPressed: OverlayController.triggerOverlay("Workspace", 5000)
+    }
 }

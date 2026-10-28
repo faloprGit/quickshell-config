@@ -10,7 +10,7 @@ PillButton {
 
     PillText {
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: parent.implicitHeight * 0.12
+        anchors.verticalCenterOffset: parent.implicitHeight * 0.09
         text: Qt.formatDateTime(clock.date, "dd")
         scale: parent.implicitHeight * 0.012
     }
