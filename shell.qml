@@ -36,6 +36,7 @@ ShellRoot {
             visible: Config.showOnAllScreens || (currentMonitorName === PillController.startupMouseMonitorName)
 
             WlrLayershell.layer: (PillController.isShortcutPeeking || PillController.isExpanded) ? WlrLayer.Overlay : WlrLayer.Top
+            WlrLayershell.namespace: "quickshellIsland"
 
             mask: PillController.isExpanded ? null : barRegion
 

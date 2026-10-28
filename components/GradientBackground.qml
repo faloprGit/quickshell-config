@@ -9,10 +9,16 @@ Item {
     required property var maskItem
     property real gradientAngle: 45.0
 
+    readonly property int normalSpinDuration: 40000
+
+    Component.onCompleted: {
+        continuousSpin.startSpin();
+    }
+
     readonly property var activeGradientStops: Gradient {
         GradientStop {
             position: 0.0
-            color: Qt.darker(Qt.color(Colors.md3.background), 1.28)
+            color: Qt.darker(Qt.color(Colors.md3.primary_container), 4.5)
         }
         GradientStop {
             position: 0.5
@@ -20,7 +26,7 @@ Item {
         }
         GradientStop {
             position: 1.0
-            color: Qt.darker(Qt.color(Colors.md3.background), 0.85)
+            color: Qt.darker(Qt.color(Colors.md3.tertiary_container), 3.5)
         }
     }
 
@@ -45,10 +51,16 @@ Item {
     }
 
     function animateToRandomAngle() {
-        let targetAngle = Math.random() * 360.0;
-        angleAnimation.from = root.gradientAngle;
-        angleAnimation.to = targetAngle;
-        angleAnimation.start();
+        continuousSpin.stop();
+
+        let targetAngle = root.gradientAngle + 120.0 + (Math.random() * 120.0);
+
+        continuousSpin.from = root.gradientAngle;
+        continuousSpin.to = targetAngle;
+        continuousSpin.duration = 850;
+        continuousSpin.easing.type = Easing.OutCubic;
+        continuousSpin.isTransitioning = true;
+        continuousSpin.start();
     }
 
     LinearGradient {
@@ -65,10 +77,28 @@ Item {
     }
 
     NumberAnimation {
-        id: angleAnimation
+        id: continuousSpin
         target: root
         property: "gradientAngle"
-        duration: Metrics.animDurationSlow
-        easing.type: Easing.OutCubic
+
+        property bool isTransitioning: false
+
+        function startSpin() {
+            continuousSpin.stop();
+            continuousSpin.from = root.gradientAngle;
+            continuousSpin.to = root.gradientAngle + 360.0;
+            continuousSpin.duration = root.normalSpinDuration;
+            continuousSpin.easing.type = Easing.Linear;
+            continuousSpin.isTransitioning = false;
+            continuousSpin.start();
+        }
+
+        onStopped: {
+            if (isTransitioning) {
+                startSpin();
+            } else {
+                startSpin();
+            }
+        }
     }
 }
